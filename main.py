@@ -3,7 +3,7 @@ import math
 
 N_ROWS = 100
 N_COLUMNS = N_ROWS
-image = Image.open("lamelo.png")
+image = Image.open("pictures/lamelo.png")
 
 def main():
     # Get even square dimensions to be replaced and generate output image
