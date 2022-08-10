@@ -1,38 +1,45 @@
 from PIL import Image
 import math, glob
 
-WIDTH = 25
-image = Image.open('pictures/lamelo.png')
+WIDTH = 10
+
+targetImg = Image.open('pictures/lamelo.png')
 
 def main():
     # Get even square dimensions to be replaced and generate output image
     squares = getSquares()
-    newImg = Image.new('RGB', (image.width, image.height))
+    newImg = Image.new('RGB', targetImg.size)
 
-    # Open all cropped images
-    # Get file names
-    files = glob.glob('pictures/sized-images/*')
-    # Store all image files in images list
-    images = []
-    for file in files:
-        images.append(Image.open(file))
+    # Store source images
+    srcImgs = []
+    for file in glob.glob('pictures/sized-images/*'):
+        srcImgs.append(Image.open(file))
+
+    # Create list of average colors for each source image
+    avgSrcColors = []
+    for img in srcImgs:
+        avgSrcColors.append(calcAvgColor(img))
 
     # Replace every square in new picture with best matching image from source images
     for square in squares:
-        crop = image.crop(square)
-        matchingImg = findClosestImg(crop, images)
+        crop = targetImg.crop(square)
+        matchingImg = srcImgs[findIndexClosestColor(crop, avgSrcColors)]
         newImg.paste(matchingImg, square)
 
     newImg.show()
+
+    # Close all source images
+    for img in srcImgs:
+        img.close()
         
 # Divides up image into squares relatively the same size, and store the coords of each square into a list
 def getSquares():
     # Generate each square's coordinates
     squares = []
     y = WIDTH
-    while y <= image.height:
+    while y <= targetImg.height:
         x = WIDTH
-        while x <= image.width:
+        while x <= targetImg.width:
             squares.append((x - WIDTH, y - WIDTH, x, y))
             x += WIDTH
 
@@ -66,22 +73,21 @@ def calcDiffColor(colorA, colorB):
 
     return math.sqrt(totalSquareDiff)
 
-# Find image in list closest in color to inputted image
-def findClosestImg(target, images):
-    # Get color we want to get closest to
-    targetColor = calcAvgColor(target)
+# Find index of color in list closest in color to inputted image
+def findIndexClosestColor(img, colors):
+    targetColor = calcAvgColor(img)
 
-    # Find closest image in color by tracking the min distance in color found while looping through array
-    closestImg = images[0]
-    min = calcDiffColor(targetColor, calcAvgColor(images[0]))
-    for img in images:
-        diffColor = calcDiffColor(targetColor, calcAvgColor(img))
+    # Find closest color by tracking the min difference in color found while looping through array
+    closestColorIndex = 0
+    min = calcDiffColor(targetColor, colors[0])
+    for i in range(1, len(colors)): # Starts at 1 to skip 0 which is the preset
+        diffColor = calcDiffColor(targetColor, colors[i])
         if diffColor < min:
-            closestImg = img
+            closestColorIndex = i
             min = diffColor
 
-    return closestImg
+    return closestColorIndex
 
 if __name__ == '__main__':
     main()
-    image.close()
+    targetImg.close()
