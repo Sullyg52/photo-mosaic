@@ -66,4 +66,5 @@ def replaceSquare(img, square, color):
 
     img.paste(newImg, square)
 
-main()
+if __name__ == '__main__':
+    main()
