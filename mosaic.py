@@ -12,7 +12,7 @@ def main():
     # Replace every square in new picture with average color of the corresponding square in the original image
     for square in squares:
         imageCrop = image.crop(square)
-        avgColor = getAvgColor(imageCrop)
+        avgColor = calcAvgColor(imageCrop)
         replaceSquare(newImg, square, avgColor)
 
     newImg.show()
@@ -33,7 +33,7 @@ def getSquares():
     return squares
 
 # Gets average color of a picture
-def getAvgColor(img):
+def calcAvgColor(img):
     # Generate list of pixels in picture
     pixels = list(img.getdata())
     nPixels = len(pixels)
@@ -58,12 +58,29 @@ def replaceSquare(img, square, color):
 
     img.paste(newImg, square)
 
-def calcDifColor(colorA, colorB):
-    totalSquareDif = 0
+# Get difference between 2 colors using distance formula
+def calcDiffColor(colorA, colorB):
+    totalSquareDiff = 0
     for a, b in zip(colorA, colorB):
-        totalSquareDif += (b - a) ** 2
+        totalSquareDiff += (b - a) ** 2
 
-    return math.sqrt(totalSquareDif)
+    return math.sqrt(totalSquareDiff)
+
+# Find image in list closest in color to inputted image
+def findClosestImg(target, images):
+    # Get color we want to get closest to
+    targetColor = calcAvgColor(target)
+
+    # Find closest image in color by tracking the min distance in color found while looping through array
+    closestImg = images[0]
+    min = calcDiffColor(targetColor, calcAvgColor(images[0]))
+    for img in images:
+        diffColor = calcDiffColor(targetColor, calcAvgColor(img))
+        if diffColor < min:
+            closestImg = img
+            min = diffColor
+
+    return closestImg
 
 if __name__ == '__main__':
     main()
