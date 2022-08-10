@@ -1,9 +1,11 @@
 from http.client import NO_CONTENT
-from PIL import Image
+from PIL import Image, ImageOps
 import math, glob
 
 # Get target image
-targetImg = Image.open('pictures/mom.jpg')
+im = Image.open('pictures/elk.png')
+im = ImageOps.exif_transpose(im) # Rotate if need be
+targetImg = im.convert('RGB') # Convert to RGB img
 
 N_ROWS = 144
 SQUARE_WIDTH = targetImg.height // N_ROWS
@@ -38,7 +40,7 @@ def main():
         outputImg.paste(matchingImg, outputSquares[sqIndex])
 
     outputImg.show()
-    outputImg.save('pictures/output.png')
+    outputImg.save('pictures/output.jpg')
 
     # Close all images
     targetImg.close()
