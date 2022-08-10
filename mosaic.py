@@ -1,21 +1,32 @@
+from http.client import NO_CONTENT
 from PIL import Image
 import math, glob
 
-WIDTH = 10
+targetImg = Image.open('pictures/mom.jpg')
+# Store source images
+srcImgs = []
+for file in glob.glob('pictures/sized-images/*'):
+    srcImgs.append(Image.open(file))
 
-targetImg = Image.open('pictures/elk.png')
+WIDTH = srcImgs[0].width
+HEIGHT = WIDTH
+N_ROWS = 100
+N_COLUMNS = targetImg.width // (targetImg.height // N_ROWS)
 
 def main():
-    # Get even square dimensions to be replaced and generate output image
-    squares = getSquares()
-    # Gets dimensions of new picture using WIDTH so there are no blank pixels
-    dim = ((targetImg.width // WIDTH) * WIDTH, (targetImg.height // WIDTH) * WIDTH)
-    newImg = Image.new('RGB', dim)
+    # Get even square coords to be replaced and generate output image
+    targetSquares = getSquares(targetImg)
+    print(targetImg.size)
+    print(targetSquares[len(targetSquares) - 1])
+    print(targetImg.width // N_COLUMNS)
 
-    # Store source images
-    srcImgs = []
-    for file in glob.glob('pictures/sized-images/*'):
-        srcImgs.append(Image.open(file))
+    # Create output image and generate square coords for it
+    dim = (N_COLUMNS * WIDTH, N_ROWS * HEIGHT)
+    newImg = Image.new('RGB', dim)
+    outputSquares = getSquares(newImg)
+    print(newImg.size)
+    print(outputSquares[len(outputSquares) - 1])
+    print(WIDTH)
 
     # Create list of average colors for each source image
     avgSrcColors = []
@@ -23,29 +34,27 @@ def main():
         avgSrcColors.append(calcAvgColor(img))
 
     # Replace every square in new picture with best matching image from source images
-    for square in squares:
-        crop = targetImg.crop(square)
+    for sqIndex in range(len(targetSquares)):
+        crop = targetImg.crop(targetSquares[sqIndex])
         matchingImg = srcImgs[findIndexClosestColor(crop, avgSrcColors)]
-        newImg.paste(matchingImg, square)
+        newImg.paste(matchingImg, outputSquares[sqIndex])
 
     newImg.show()
-
-    # Close all source images
-    for img in srcImgs:
-        img.close()
+    newImg.save('pictures/output.png')
         
-# Divides up image into squares relatively the same size, and store the coords of each square into a list
-def getSquares():
+# Divides up image into squares of the same size, and store the coords of each square into a list
+def getSquares(img):
+    # Get width and height of each square
+    dWidth = img.width // N_COLUMNS
+    dHeight = img.height // N_ROWS
+
     # Generate each square's coordinates
     squares = []
-    y = WIDTH
-    while y <= targetImg.height:
-        x = WIDTH
-        while x <= targetImg.width:
-            squares.append((x - WIDTH, y - WIDTH, x, y))
-            x += WIDTH
-
-        y += WIDTH
+    for r in range(N_ROWS):
+        for c in range(N_COLUMNS):
+            x = c * dWidth
+            y = r * dHeight
+            squares.append((x, y, x + dWidth, y + dHeight))
 
     return squares
 
@@ -93,3 +102,7 @@ def findIndexClosestColor(img, colors):
 if __name__ == '__main__':
     main()
     targetImg.close()
+
+    # Close all source images
+    for img in srcImgs:
+        img.close()
