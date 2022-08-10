@@ -1,7 +1,7 @@
 from PIL import Image
 import math
 
-WIDTH = 10
+WIDTH = 25
 image = Image.open('pictures/lamelo.png')
 
 def main():
@@ -16,7 +16,6 @@ def main():
         replaceSquare(newImg, square, avgColor)
 
     newImg.show()
-    image.close()
         
 # Divides up image into squares relatively the same size, and store the coords of each square into a list
 def getSquares():
@@ -58,6 +57,13 @@ def replaceSquare(img, square, color):
     newImg = Image.new('RGB', (width, height), color)
 
     img.paste(newImg, square)
+
+def calcDifColor(colorA, colorB):
+    totalSquareDif = 0
+    for a, b in zip(colorA, colorB):
+        totalSquareDif += (b - a) ** 2
+
+    return math.sqrt(totalSquareDif)
 
 if __name__ == '__main__':
     main()
