@@ -2,11 +2,14 @@ from http.client import NO_CONTENT
 from PIL import Image
 import math, glob
 
-SQUARE_WIDTH = 16
+# Get target image
+targetImg = Image.open('pictures/mom.jpg')
+
+N_ROWS = 144
+SQUARE_WIDTH = targetImg.height // N_ROWS
+N_COLUMNS = targetImg.width // SQUARE_WIDTH
 
 def main():
-    # Get target image
-    targetImg = Image.open('pictures/elk.png')
     # Get source images
     srcImgs = []
     for file in glob.glob('pictures/sized-images/*'):
@@ -14,20 +17,14 @@ def main():
 
     # Get even square coords to be replaced
     targetSquares = getSquares(targetImg, SQUARE_WIDTH)
-    print(targetImg.size)
-    print(targetSquares[len(targetSquares) - 1])
-    print(SQUARE_WIDTH)
 
     # Get source image width and use that to calculate dimensions of output image
     srcImagesWidth = srcImgs[0].width
-    dim = ((targetImg.width // SQUARE_WIDTH) * srcImagesWidth, (targetImg.height // SQUARE_WIDTH) * srcImagesWidth)
+    dim = (N_COLUMNS * srcImagesWidth, N_ROWS * srcImagesWidth)
 
     # Create output image
     outputImg = Image.new('RGB', dim)
     outputSquares = getSquares(outputImg, srcImagesWidth)
-    print(outputImg.size)
-    print(outputSquares[len(outputSquares) - 1])
-    print(srcImagesWidth)
 
     # Create list of average colors for each source image
     avgSrcColors = []
@@ -52,14 +49,11 @@ def main():
 def getSquares(img, width):
     # Generate each square's coordinates
     squares = []
-    y = width
-    while y <= img.height:
-        x = width
-        while x <= img.width:
-            squares.append((x - width, y - width, x, y))
-            x += width
-
-        y += width
+    for r in range(N_ROWS):
+        h = r * width
+        for c in range(N_COLUMNS):
+            w = c * width
+            squares.append((w, h, w + width, h + width))
 
     return squares
 
