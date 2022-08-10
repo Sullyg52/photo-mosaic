@@ -1,10 +1,18 @@
 import glob
+import os
 from PIL import Image, ImageOps
 
-WIDTH = 128
+WIDTH = 64
 HEIGHT = WIDTH
 
 def main():
+    # Delete old files
+    files = glob.glob('pictures/sized-images/*')
+    for f in files:
+        os.remove(f)
+
+    # Generate new files
+    
     # Get file names
     files = glob.glob('pictures/source-images/*')
 
