@@ -1,7 +1,7 @@
 import glob
 from PIL import Image
 
-WIDTH = 50
+WIDTH = 25
 HEIGHT = WIDTH
 
 def main():
@@ -17,7 +17,7 @@ def main():
     for i in range(len(images)):
         cropped = images[i].resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
         images[i].close()
-        cropped.save(f'pictures/cropped-images/image{i + 1}.{images[i].format.lower()}')
+        cropped.save(f'pictures/sized-images/image{i + 1}.{images[i].format.lower()}')
 
 
 

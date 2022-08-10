@@ -1,5 +1,5 @@
 from PIL import Image
-import math
+import math, glob
 
 WIDTH = 25
 image = Image.open('pictures/lamelo.png')
@@ -9,11 +9,19 @@ def main():
     squares = getSquares()
     newImg = Image.new('RGB', (image.width, image.height))
 
-    # Replace every square in new picture with average color of the corresponding square in the original image
+    # Open all cropped images
+    # Get file names
+    files = glob.glob('pictures/sized-images/*')
+    # Store all image files in images list
+    images = []
+    for file in files:
+        images.append(Image.open(file))
+
+    # Replace every square in new picture with best matching image from source images
     for square in squares:
-        imageCrop = image.crop(square)
-        avgColor = calcAvgColor(imageCrop)
-        replaceSquare(newImg, square, avgColor)
+        crop = image.crop(square)
+        matchingImg = findClosestImg(crop, images)
+        newImg.paste(matchingImg, square)
 
     newImg.show()
         
@@ -49,14 +57,6 @@ def calcAvgColor(img):
     
     # Divide each by num of pixels to get avg and return
     return (r // nPixels, g // nPixels, b // nPixels)
-
-# Create new image of specified color and paste it into original image
-def replaceSquare(img, square, color):
-    width = square[2] - square[0]
-    height = square[3] - square[1]
-    newImg = Image.new('RGB', (width, height), color)
-
-    img.paste(newImg, square)
 
 # Get difference between 2 colors using distance formula
 def calcDiffColor(colorA, colorB):
