@@ -1,7 +1,7 @@
 import glob
-from PIL import Image
+from PIL import Image, ImageOps
 
-WIDTH = 25
+WIDTH = 128
 HEIGHT = WIDTH
 
 def main():
@@ -11,13 +11,15 @@ def main():
     # Store all image files in images list
     images = []
     for file in files:
-        images.append(Image.open(file))
+        im = Image.open(file)
+        im = ImageOps.exif_transpose(im) # Rotate if need be
+        images.append(im.convert('RGB')) # Convert to RGB img
 
     # Crop all images and save them
     for i in range(len(images)):
         cropped = images[i].resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
         images[i].close()
-        cropped.save(f'pictures/sized-images/image{i + 1}.{images[i].format.lower()}')
+        cropped.save(f'pictures/sized-images/image{i + 1}.jpg')
 
 
 
