@@ -3,12 +3,14 @@ import math, glob
 
 WIDTH = 10
 
-targetImg = Image.open('pictures/lamelo.png')
+targetImg = Image.open('pictures/elk.png')
 
 def main():
     # Get even square dimensions to be replaced and generate output image
     squares = getSquares()
-    newImg = Image.new('RGB', targetImg.size)
+    # Gets dimensions of new picture using WIDTH so there are no blank pixels
+    dim = ((targetImg.width // WIDTH) * WIDTH, (targetImg.height // WIDTH) * WIDTH)
+    newImg = Image.new('RGB', dim)
 
     # Store source images
     srcImgs = []
