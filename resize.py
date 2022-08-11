@@ -1,13 +1,20 @@
+"""Crops all specified images to specified width and height and converts them to JPEGS.
+Can also delete old cropped images. Must ensure set width and height are less than or
+equal to the smallest width of the inputted pictures
+"""
 import glob
 import os
 from PIL import Image, ImageOps
 
 DELETE = True  # Whether or not to delete old pictures
-WIDTH = 100  # Desired width of cropped squares
-HEIGHT = WIDTH
+# Desired width of cropped squares, must be less than or equal to width of pictures
+WIDTH = 100
+HEIGHT = WIDTH  # Change if you would like to crop to some size besides squares
 
 
 def main():
+    """Crops all specified images to specified width and height and converts them to
+    JPEGS. Can also delete old cropped images"""
     if DELETE:
         # Deletes old files
         files = glob.glob("pictures/sized-images/*")
