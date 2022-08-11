@@ -10,12 +10,18 @@ from PIL import Image, ImageOps
 import math
 import glob
 
-# Get target image
-target_img = Image.open("pictures/elk.png")  # <-- INSERT TARGET PICTURE LOCATION HERE
+target_img = Image.open("pictures/elk.png")  # <-- INSERT TARGET PICTURE LOCATION
+
+# Get source images
+src_imgs = []
+for file in glob.glob("pictures/sized-images/*"):  # <-- INSERT SOURCE IMAGES LOCATION
+    src_imgs.append(Image.open(file))
+
+MIN_N_ROWS = 144  # <-- INSERT DESIRED NUMBER OF ROWS
+
+# Ensure target image is formatted correctly
 target_img = ImageOps.exif_transpose(target_img)  # Rotates if need be
 target_img = target_img.convert("RGB")  # Converts to RGB image
-
-MIN_N_ROWS = 144  # <-- INSERT DESIRED NUMBER OF ROWS HERE
 
 SQUARE_WIDTH = target_img.height // MIN_N_ROWS
 N_ROWS = target_img.height // SQUARE_WIDTH
@@ -25,11 +31,6 @@ N_COLUMNS = target_img.width // SQUARE_WIDTH
 def main():
     """Creates, shows, and saves a photo-mosaic"""
     global target_img
-
-    # Get source images
-    src_imgs = []
-    for file in glob.glob("pictures/sized-images/*"):
-        src_imgs.append(Image.open(file))
 
     # Crop target image in the middle so that pixels lost will be evenly distributed
     target_img = crop_img_middle(
