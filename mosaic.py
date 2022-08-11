@@ -1,13 +1,21 @@
+"""Creates a photo-mosaic of a specified image and using specified source images and
+shows and saves it. Any target image can be used, but the source images must be squares.
+The user can also specify the minimum number of rows of pictures in the mosaic, and it
+will dynamically size the mosaic to have at least that many rows. The mosaic will try
+to have as close to as many rows as was specified by the user, but will add rows if
+necessary to show more of the output image in the end.
+"""
+
 from PIL import Image, ImageOps
 import math
 import glob
 
 # Get target image
-target_img = Image.open("pictures/elk.png")
-target_img = ImageOps.exif_transpose(target_img)  # Rotate if need be
-target_img = target_img.convert("RGB")  # Convert to RGB im
+target_img = Image.open("pictures/elk.png")  # <-- INSERT TARGET PICTURE LOCATION HERE
+target_img = ImageOps.exif_transpose(target_img)  # Rotates if need be
+target_img = target_img.convert("RGB")  # Converts to RGB image
 
-MIN_N_ROWS = 144
+MIN_N_ROWS = 144  # <-- INSERT DESIRED NUMBER OF ROWS HERE
 
 SQUARE_WIDTH = target_img.height // MIN_N_ROWS
 N_ROWS = target_img.height // SQUARE_WIDTH
@@ -15,6 +23,7 @@ N_COLUMNS = target_img.width // SQUARE_WIDTH
 
 
 def main():
+    """Creates, shows, and saves a photo-mosaic"""
     global target_img
 
     # Get source images
@@ -66,9 +75,18 @@ def main():
         img.close()
 
 
-# Divides up image into squares of the same size,
-# and store the coords of each square into a list
 def get_squares(img, width):
+    """Splits image up into equal-sized square coordinates based on width of squares
+    and the number of rows/columns
+
+    Args:
+        img (Image): Image to split up into squares
+        width (int): Width of each of the desired squares
+
+    Returns:
+        list[tuple[int, int, int, int]]: List of square coordinates of the form (left,
+        top, right, bottom)
+    """
     # Generate each square's coordinates
     squares = []
     for r in range(N_ROWS):
@@ -80,8 +98,15 @@ def get_squares(img, width):
     return squares
 
 
-# Gets average color of a picture
 def calc_avg_color(img):
+    """Calculates the average color of an image's pixels
+
+    Args:
+        img (Image): Image to find average color of
+
+    Returns:
+        tuple[int, int, int]: RGB of average color of image
+    """
     # Generate list of pixels in picture
     pixels = list(img.getdata())
     n_pixels = len(pixels)
@@ -99,8 +124,16 @@ def calc_avg_color(img):
     return (r // n_pixels, g // n_pixels, b // n_pixels)
 
 
-# Get difference between 2 colors using distance formula
 def calc_diff_color(colorA, colorB):
+    """Calculate difference between the two colors using pythagorean distance
+
+    Args:
+        colorA (tuple[int, int, int]): First color
+        colorB (tuple[int, int, int]): Second color
+
+    Returns:
+        float: Difference in the two colors as calculated using pythagorean distance
+    """
     total_square_diff = 0
     for a, b in zip(colorA, colorB):
         total_square_diff += (b - a) ** 2
@@ -108,8 +141,18 @@ def calc_diff_color(colorA, colorB):
     return math.sqrt(total_square_diff)
 
 
-# Find index of color in list closest in color to inputted image
 def find_index_closest_color(img, colors):
+    """Finds and returns the index of the color most similar to the average color of
+    the image
+
+    Args:
+        img (Image): Image to find average color of and find similar color to
+        colors (list[tuple[int, int, int]]): List of colors to use to find similar
+        color to picture
+
+    Returns:
+        int: index of color in arg list most similar to image's color
+    """
     target_color = calc_avg_color(img)
 
     # Find closest color by tracking the min difference in
