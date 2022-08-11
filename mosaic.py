@@ -7,10 +7,11 @@ im = Image.open("pictures/elk.png")
 im = ImageOps.exif_transpose(im)  # Rotate if need be
 target_img = im.convert("RGB")  # Convert to RGB im
 
-n_rows = 144
-square_width = target_img.height // n_rows
-n_rows = target_img.height // square_width
-n_columns = target_img.width // square_width
+MIN_N_ROWS = 144
+
+SQUARE_WIDTH = target_img.height // MIN_N_ROWS
+N_ROWS = target_img.height // SQUARE_WIDTH
+N_COLUMNS = target_img.width // SQUARE_WIDTH
 
 
 def main():
@@ -20,16 +21,22 @@ def main():
         src_imgs.append(Image.open(file))
 
     # Get even square coords to be replaced
-    target_squares = get_squares(target_img, square_width)
+    target_squares = get_squares(target_img, SQUARE_WIDTH)
+    print(target_img.size)
+    print(target_squares[len(target_squares) - 1])
+    print(SQUARE_WIDTH)
 
     # Get source image width and use that to
     # calculate dimensions of output image
     src_imgs_width = src_imgs[0].width
-    dim = (n_columns * src_imgs_width, n_rows * src_imgs_width)
+    dim = (N_COLUMNS * src_imgs_width, N_ROWS * src_imgs_width)
 
     # Create output image
     output_img = Image.new("RGB", dim)
     output_squares = get_squares(output_img, src_imgs_width)
+    print(output_img.size)
+    print(output_squares[len(output_squares) - 1])
+    print(src_imgs_width)
 
     # Create list of average colors for each source image
     avg_src_colors = []
@@ -56,9 +63,9 @@ def main():
 def get_squares(img, width):
     # Generate each square's coordinates
     squares = []
-    for r in range(n_rows):
+    for r in range(N_ROWS):
         h = r * width
-        for c in range(n_columns):
+        for c in range(N_COLUMNS):
             w = c * width
             squares.append((w, h, w + width, h + width))
 
