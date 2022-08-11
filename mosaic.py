@@ -39,10 +39,6 @@ def main():
 
     # Get even square coords to be replaced
     target_squares = get_squares(target_img, SQUARE_WIDTH)
-    print(target_img.size)
-    print(target_squares[0])
-    print(target_squares[len(target_squares) - 1])
-    print(SQUARE_WIDTH)
 
     # Get source image width and use that to
     # calculate dimensions of output image
@@ -52,9 +48,6 @@ def main():
     # Create output image
     output_img = Image.new("RGB", dim)
     output_squares = get_squares(output_img, src_imgs_width)
-    print(output_img.size)
-    print(output_squares[len(output_squares) - 1])
-    print(src_imgs_width)
 
     # Create list of average colors for each source image
     avg_src_colors = []
