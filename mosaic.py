@@ -3,9 +3,9 @@ import math
 import glob
 
 # Get target image
-im = Image.open('pictures/elk.png')
+im = Image.open("pictures/elk.png")
 im = ImageOps.exif_transpose(im)  # Rotate if need be
-target_img = im.convert('RGB')  # Convert to RGB im
+target_img = im.convert("RGB")  # Convert to RGB im
 
 n_rows = 144
 square_width = target_img.height // n_rows
@@ -16,7 +16,7 @@ n_columns = target_img.width // square_width
 def main():
     # Get source images
     src_imgs = []
-    for file in glob.glob('pictures/sized-images/*'):
+    for file in glob.glob("pictures/sized-images/*"):
         src_imgs.append(Image.open(file))
 
     # Get even square coords to be replaced
@@ -28,7 +28,7 @@ def main():
     dim = (n_columns * src_imgs_width, n_rows * src_imgs_width)
 
     # Create output image
-    output_img = Image.new('RGB', dim)
+    output_img = Image.new("RGB", dim)
     output_squares = get_squares(output_img, src_imgs_width)
 
     # Create list of average colors for each source image
@@ -44,7 +44,7 @@ def main():
         output_img.paste(matching_img, output_squares[sq_index])
 
     output_img.show()
-    output_img.save('pictures/output.jpg')
+    output_img.save("pictures/output.jpg")
 
     # Close all source images
     for img in src_imgs:
@@ -110,5 +110,5 @@ def find_index_closest_color(img, colors):
     return closest_clr_index
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
