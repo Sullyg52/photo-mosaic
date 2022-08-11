@@ -3,9 +3,9 @@ import math
 import glob
 
 # Get target image
-im = Image.open("pictures/elk.png")
-im = ImageOps.exif_transpose(im)  # Rotate if need be
-target_img = im.convert("RGB")  # Convert to RGB im
+target_img = Image.open("pictures/elk.png")
+target_img = ImageOps.exif_transpose(target_img)  # Rotate if need be
+target_img = target_img.convert("RGB")  # Convert to RGB im
 
 MIN_N_ROWS = 144
 
@@ -15,14 +15,22 @@ N_COLUMNS = target_img.width // SQUARE_WIDTH
 
 
 def main():
+    global target_img
+
     # Get source images
     src_imgs = []
     for file in glob.glob("pictures/sized-images/*"):
         src_imgs.append(Image.open(file))
 
+    # Crop target image in the middle so that pixels lost will be evenly distributed
+    target_img = crop_img_middle(
+        target_img, (SQUARE_WIDTH * N_COLUMNS, SQUARE_WIDTH * N_ROWS)
+    )
+
     # Get even square coords to be replaced
     target_squares = get_squares(target_img, SQUARE_WIDTH)
     print(target_img.size)
+    print(target_squares[0])
     print(target_squares[len(target_squares) - 1])
     print(SQUARE_WIDTH)
 
@@ -115,6 +123,26 @@ def find_index_closest_color(img, colors):
             min = diff_color
 
     return closest_clr_index
+
+
+def crop_img_middle(img, size):
+    """Downsizes image to given size by cropping the image an even amount on all sides
+
+    Args:
+        img (Image): Image to be cropped
+        size (tuple[int, int]): Width, height to crop image to
+
+    Returns:
+        Image: Cropped image
+    """
+    dim = (
+        (img.width - size[0]) // 2,
+        (img.height - size[1]) // 2,
+        (img.width + size[0]) // 2,
+        (img.height + size[1]) // 2,
+    )
+
+    return img.crop(dim)
 
 
 if __name__ == "__main__":
