@@ -2,15 +2,17 @@ import glob
 import os
 from PIL import Image, ImageOps
 
-WIDTH = 100
+DELETE = True  # Whether or not to delete old pictures
+WIDTH = 100  # Desired width of cropped squares
 HEIGHT = WIDTH
 
 
 def main():
-    # Delete old files
-    files = glob.glob("pictures/sized-images/*")
-    for f in files:
-        os.remove(f)
+    if DELETE:
+        # Deletes old files
+        files = glob.glob("pictures/sized-images/*")
+        for f in files:
+            os.remove(f)
 
     # Generate new files
     # Get file names
