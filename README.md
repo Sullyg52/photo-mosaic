@@ -33,7 +33,7 @@ To install the project, run `python pip install -r requirements.txt` from the pr
 ![Change whether the script deletes old sized images and what size to make thew new source images.](images/resize-options-1.png)  
 Here, near the top of the file, you can change whether the old sized images are deleted by changing the DELETE boolean, if this is not your first time running the script.
 You can also change the size you wish to make your source images. This is mainly to control how detailed the source images will be when you
-zoom in on the outputted mosaic. Currently, the photomosaic only supports square source images, so make sure the HEIGHT field stays equal to WIDTH.
+zoom in on the outputted mosaic. Currently, the program only supports square source images, so make sure the HEIGHT field stays equal to WIDTH.
 Also, make sure that the size you choose is smaller than the width and height of all of your source images for the best results.
 Keep in mind that larger source images will result in a much larger mosaic file size in the end.  
 ![Change where the source images to be resized are stored and where it will output the new sized images.](images/resize-options-2.png)  

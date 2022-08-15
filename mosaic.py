@@ -17,7 +17,7 @@ src_imgs = []
 for file in glob.glob("pictures/sized-images/*"):  # <-- INSERT SOURCE IMAGES LOCATION
     src_imgs.append(Image.open(file))
 
-MIN_N_ROWS = 144  # <-- INSERT DESIRED NUMBER OF ROWS
+MIN_N_ROWS = 100  # <-- INSERT DESIRED NUMBER OF ROWS
 
 # Ensure target image is formatted correctly
 target_img = ImageOps.exif_transpose(target_img)  # Rotates if need be
@@ -62,7 +62,7 @@ def main():
         output_img.paste(matching_img, output_squares[sq_index])
 
     output_img.show()
-    output_img.save("pictures/output.jpg")
+    output_img.save("pictures/output.jpg")  # <-- CHANGE WHERE TO SAVE MOSAIC
 
     # Close all source images
     for img in src_imgs:
