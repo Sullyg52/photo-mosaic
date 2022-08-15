@@ -27,7 +27,7 @@ To install the project, run `python pip install -r requirements.txt` from the pr
 
 ## Usage
 
-1. Choose a target image and source images to use for the mosaic.
+1. Choose a target image and source images to use for the mosaic. The more source images you use, the better your mosaic will turn out!
 
 2. Open resize.py in a text editor of your choosing and configure it so it resizes your source images to your liking.  
 ![Change whether the script deletes old sized images and what size to make thew new source images.](images/resize-options-1.png)  
