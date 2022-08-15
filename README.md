@@ -23,7 +23,7 @@ possible. After the image is created, it will be saved to a directory and name o
 
 ## Installation
 
-To install the project, run '''python pip install -r requirements.txt" from the project directory.
+To install the project, run `python pip install -r requirements.txt` from the project directory.
 
 ## Usage
 
@@ -40,7 +40,7 @@ Keep in mind that larger source images will result in a much larger mosaic file 
 Here, in the main() function, you can change what directory the old sized images are in (at the first file path shown in the image), what directory the source images to
 be resized are in (the second file path shown), and what directory the new, sized images will be output to (the last file path shown).
 
-3. Once you have configured everything to your liking, run '''python resize.py''' from the project directory to run the script and generate your sized images.
+3. Once you have configured everything to your liking, run `python resize.py` from the project directory to run the script and generate your sized images.
 
 4. Open mosaic.py in a text editor of your choosing and configure it to your liking.
 ![Change the target image location, source image location, and desired number of rows.](images/mosaic-options-1.png)
@@ -54,4 +54,4 @@ of lots of smaller images, and not pixels.
 Here, near the bottom of the main() function, you can change what directory the outputted mosaic will save in and what name it will save as.
 Make sure to keep the file extension as .jpg.
 
-5. Once you have configured everything to your liking, run '''python mosaic.py''' from the project directory to create your photo mosaic!
+5. Once you have configured everything to your liking, run `python mosaic.py` from the project directory to create your photo mosaic!
