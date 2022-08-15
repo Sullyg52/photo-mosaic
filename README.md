@@ -42,8 +42,8 @@ be resized are in (the second file path shown), and what directory the new, size
 
 3. Once you have configured everything to your liking, run `python resize.py` from the project directory to run the script and generate your sized images.
 
-4. Open mosaic.py in a text editor of your choosing and configure it to your liking.
-![Change the target image location, source image location, and desired number of rows.](images/mosaic-options-1.png)
+4. Open mosaic.py in a text editor of your choosing and configure it to your liking.  
+![Change the target image location, source image location, and desired number of rows.](images/mosaic-options-1.png)  
 Here, near the top of the file, you can change the directory and name of the image to be made into a photo mosaic. Next, change the directory
 where the source images are located. Make sure this is the directory where the sized images generated in the last step are located. Finally, change
 the minimum desired number of rows to a number of your choosing. This can be thought of as the quality of the outputted mosaic since each source image
