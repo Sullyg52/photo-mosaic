@@ -17,13 +17,13 @@ def main():
     JPEGS. Can also delete old cropped images"""
     if DELETE:
         # Deletes old files
-        files = glob.glob("pictures/sized-images/*")
+        files = glob.glob("pictures/sized-images/*")  # <-- CHANGE DIRECTORY
         for f in files:
             os.remove(f)
 
     # Generate new files
     # Get file names
-    files = glob.glob("pictures/source-images/*")
+    files = glob.glob("pictures/source-images/*")  # <-- CHANGE DIRECTORY
 
     # Store all image files in images list
     images = []
@@ -36,7 +36,7 @@ def main():
     for i in range(len(images)):
         cropped = images[i].resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
         images[i].close()
-        cropped.save(f"pictures/sized-images/image{i + 1}.jpg")
+        cropped.save(f"pictures/sized-images/image{i + 1}.jpg")  # <-- CHANGE DIRECTORY
 
 
 if __name__ == "__main__":
