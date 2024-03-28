@@ -23,7 +23,7 @@ possible. After the image is created, it will be saved to a directory and name o
 
 ## Installation
 
-To install the project, run `python pip install -r requirements.txt` from the project directory.
+To install the project, run `pip install -r requirements.txt` from the project directory.
 
 ## Usage
 
